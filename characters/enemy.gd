@@ -6,6 +6,7 @@ enum MODE {
 }
 
 @export var movement_speed = 100.0
+@export var jump_speed = 500.0
 @export var mode = MODE.PATROLLING
 @export var patrol_points : Array[Vector2]
 var patrol_idx = 0 :
@@ -15,6 +16,8 @@ var patrol_idx = 0 :
 		patrol_idx = new
 @export var aggro_range = 64
 var direction = Vector2(0,0)
+
+var last_jump_x = INF
 
 func _physics_process(delta) -> void:
 	match mode:
@@ -29,8 +32,12 @@ func _physics_process(delta) -> void:
 				velocity.x = 0
 				patrol_idx+=1
 			else:
-				if ($WallScanLeft.is_colliding() and direction.x<0) or ($WallScanRight.is_colliding() and direction.x>0):
-					velocity.y-=100;
+				if is_on_floor() and ($WallScanLeft.is_colliding() and direction.x<0) or ($WallScanRight.is_colliding() and direction.x>0):
+					if last_jump_x != position.x:
+						velocity.y = -jump_speed
+						last_jump_x = position.x
+					else:
+						patrol_idx += 1
 				velocity.x = (direction.x * movement_speed)
 		MODE.AGGRESSIVE:
 			velocity = global_position.direction_to(get_parent().get_node("Player").position) * movement_speed

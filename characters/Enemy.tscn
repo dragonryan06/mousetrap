@@ -18,11 +18,11 @@ shape = SubResource("RectangleShape2D_5rb1m")
 
 [node name="CliffScanRight" type="RayCast2D" parent="."]
 position = Vector2(24, 16)
-target_position = Vector2(0, 40)
+target_position = Vector2(0, 70)
 
 [node name="CliffScanLeft" type="RayCast2D" parent="."]
 position = Vector2(-24, 16)
-target_position = Vector2(0, 40)
+target_position = Vector2(0, 70)
 
 [node name="WallScanRight" type="RayCast2D" parent="."]
 target_position = Vector2(40, 0)
