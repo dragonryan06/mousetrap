@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://delxsux7qm8o6"]
+[gd_scene load_steps=4 format=3 uid="uid://delxsux7qm8o6"]
 
 [ext_resource type="Script" path="res://characters/enemy.gd" id="1_b3g1x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5rb1m"]
 size = Vector2(32, 48)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wnb4s"]
+radius = 200.0
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_b3g1x")
@@ -17,11 +20,11 @@ position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_5rb1m")
 
 [node name="CliffScanRight" type="RayCast2D" parent="."]
-position = Vector2(24, 16)
+position = Vector2(16, 16)
 target_position = Vector2(0, 70)
 
 [node name="CliffScanLeft" type="RayCast2D" parent="."]
-position = Vector2(-24, 16)
+position = Vector2(-16, 16)
 target_position = Vector2(0, 70)
 
 [node name="WallScanRight" type="RayCast2D" parent="."]
@@ -29,3 +32,23 @@ target_position = Vector2(40, 0)
 
 [node name="WallScanLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-40, 0)
+
+[node name="Eyes" type="RayCast2D" parent="."]
+
+[node name="AggroArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]
+shape = SubResource("CircleShape2D_wnb4s")
+
+[node name="AggroTimeout" type="Timer" parent="."]
+
+[node name="DebugModeLabel" type="Label" parent="."]
+offset_left = -128.0
+offset_top = -56.0
+offset_right = 128.0
+offset_bottom = -33.0
+text = "mode: ???"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
+[connection signal="body_exited" from="AggroArea" to="." method="_on_aggro_area_body_exited"]
